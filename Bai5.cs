@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace WinFormsApp1
 {
@@ -14,21 +16,30 @@ namespace WinFormsApp1
     {
         public Dictionary<string, double> seatPrices;
         public Dictionary<string, double> filmPrices;
-        public CheckBox[,] seatStatusList;
-        public Dictionary<Tuple<string, string>, CheckBox[,]> filmWithSeatState;
+        public System.Windows.Forms.CheckBox[,] seatStatusList;
+        public Dictionary<Tuple<string, string>, System.Windows.Forms.CheckBox[,]> filmWithSeatState;
         public Bai5()
         {
+            System.Windows.Forms.CheckBox[,] mySeatArray = new System.Windows.Forms.CheckBox[seatRows, seatCols];
+            for (int i = 0; i < seatRows; i++)
+            {
+                for (int j = 0; j < seatCols; j++)
+                {
+                    mySeatArray[i, j] = new System.Windows.Forms.CheckBox();
+                }
+            }
             seatPrices = new Dictionary<string, double>();
             filmPrices = new Dictionary<string, double>();
-            seatStatusList = new CheckBox[seatRows, seatCols];
-            filmWithSeatState = new Dictionary<Tuple<string, string>, CheckBox[,]>();
+            seatStatusList = new System.Windows.Forms.CheckBox[seatRows, seatCols];
+            filmWithSeatState = new Dictionary<Tuple<string, string>, System.Windows.Forms.CheckBox[,]>();
             InitializeComponent();
             Load += Bai5_Load;
-            createSeats();
+            createSeats(mySeatArray);
             seatStatusList = seatStatus;
         }
 
-        private void Bai5_Load(object sender, EventArgs e) {
+        private void Bai5_Load(object sender, EventArgs e)
+        {
             // Set seat prices
             seatPrices.Clear();
             seatPrices.Add("A1", 0.25);
@@ -68,24 +79,34 @@ namespace WinFormsApp1
             filmWithSeatState.Add(Tuple.Create("Tarot", "3"), seatStatusList);
         }
 
-        private void saveSeatState()
-        {
-            CheckBox[,] currentSeatState = new CheckBox[seatRows, seatCols];
-            for (int i = 0; i < seatRows; i++)
-            {
-                for (int j = 0; j < seatCols; j++)
-                {
-                    currentSeatState[i, j] = 
-                }
-            }
-        }
-
+        // Only call when finish payment
         private void updateSeatState()
         {
             Tuple<string, string> temp = Tuple.Create(filmList.SelectedText, section.SelectedText);
-            CheckBox[,] newStatus = filmWithSeatState[temp];
-            // Not Finished
+            bool[,] newStatus = saveSeatState();
+            System.Windows.Forms.CheckBox[,] currentStatus = filmWithSeatState[temp];
+            for (int i = 0; i < currentStatus.GetLength(0); i++)
+            {
+                for (int j = 0; j < currentStatus.GetLength(1); j++)
+                {
+                    currentStatus[i, j].Checked = newStatus[i, j];
+                    if (newStatus[i, j])
+                    {
+                        currentStatus[i, j].Enabled = false;
+                    }
+                }
+            }
+            filmWithSeatState[temp] = currentStatus;
         }
+
+        // After hitting renew button
+        private void renewStatus()
+        {
+            Tuple<string, string> temp = Tuple.Create(filmList.SelectedText, section.SelectedText);
+            createSeats(filmWithSeatState[temp]);
+        }
+
+
 
     }
 }

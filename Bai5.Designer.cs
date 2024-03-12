@@ -31,14 +31,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Bai5));
             filmList = new ComboBox();
             section = new ComboBox();
-            labelX = 264;
-            labelY = 0;
-            
+            pay = new Button();
+            reset = new Button();
+            exit = new Button();
+            renew = new Button();
             SuspendLayout();
             // 
             // filmList
             // 
-            List<String> films = new List<string>
+            List<string> films = new List<string>()
             {
                 "Đào, phở và Piano",
                 "Mai",
@@ -55,7 +56,7 @@
             // 
             // section
             // 
-            List<String> sectionOrder = new List<string> { "1", "2", "3" };
+            List<String> sectionOrder = new List<string>() { "1", "2", "3" };
             section.DataSource = sectionOrder;
             section.DropDownStyle = ComboBoxStyle.DropDownList;
             section.FormattingEnabled = true;
@@ -64,11 +65,51 @@
             section.Size = new Size(151, 28);
             section.TabIndex = 1;
             // 
+            // pay
+            // 
+            pay.Location = new Point(613, 139);
+            pay.Name = "pay";
+            pay.Size = new Size(151, 41);
+            pay.TabIndex = 2;
+            pay.Text = "Thanh Toán";
+            pay.UseVisualStyleBackColor = true;
+            // 
+            // reset
+            // 
+            reset.Location = new Point(613, 205);
+            reset.Name = "reset";
+            reset.Size = new Size(151, 42);
+            reset.TabIndex = 3;
+            reset.Text = "Reset";
+            reset.UseVisualStyleBackColor = true;
+            // 
+            // exit
+            // 
+            exit.Location = new Point(613, 277);
+            exit.Name = "exit";
+            exit.Size = new Size(151, 40);
+            exit.TabIndex = 4;
+            exit.Text = "Thoát";
+            exit.UseVisualStyleBackColor = true;
+            // 
+            // renew
+            // 
+            renew.Location = new Point(613, 348);
+            renew.Name = "renew";
+            renew.Size = new Size(151, 40);
+            renew.TabIndex = 5;
+            renew.Text = "Làm Mới";
+            renew.UseVisualStyleBackColor = true;
+            // 
             // Bai5
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(renew);
+            Controls.Add(exit);
+            Controls.Add(reset);
+            Controls.Add(pay);
             Controls.Add(section);
             Controls.Add(filmList);
             Name = "Bai5";
@@ -83,21 +124,31 @@
         private ComboBox section;
         private int seatRows = 3;
         private int seatCols = 5;
+        int seatWidth = 40;
+        int seatHeight = 40;
         int labelX;
         int labelY;
-        private CheckBox[,] seatStatus;
-        private void createSeats()
+        public CheckBox[,] seatStatus;
+        int gap = 10;
+        int startX;
+        int startY;
+        private void createSeats(CheckBox[,] seatArray)
         {
-            seatStatus = new CheckBox[seatRows, seatCols];
-            int seatWidth = 40;
-            int seatHeight = 40;
-            int gap = 10; 
-            int startX = (this.ClientSize.Width - (seatCols * (seatWidth + gap) - gap)) / 2;
-            int startY = 240; 
-            string[] alphabet = { "A", "B", "C"};
+            if (seatArray.GetLength(0) != seatRows || seatArray.GetLength(1) != seatCols)
+            {
+                seatRows = seatArray.GetLength(0);
+                seatCols = seatArray.GetLength(1);
+                seatStatus = seatArray;
+            }
+
+            int startXTemp = (this.ClientSize.Width - (seatCols * (seatWidth + gap) - gap)) / 2;
+            int startYTemp = 240;
+            startX = startXTemp;
+            startY = startYTemp;
+            string[] alphabet = { "A", "B", "C" };
             for (int i = 0; i < seatRows; i++)
             {
-                int y = startY + (seatHeight + gap) * i;
+                int y = startYTemp + (seatHeight + gap) * i;
                 Label label = new Label();
                 label.Text = alphabet[i];
                 label.AutoSize = true;
@@ -105,17 +156,38 @@
                 this.Controls.Add(label);
                 for (int j = 0; j < seatCols; j++)
                 {
-                    int x = startX + (seatWidth + gap) * j;
-
-                    CheckBox seat = new CheckBox();
-                    seat.Size = new System.Drawing.Size(seatWidth, seatHeight);
+                    int x = startXTemp + (seatWidth + gap) * j;
+                    CheckBox seat = seatArray[i, j];
+                    seat.Size = new Size(seatWidth, seatHeight);
                     seat.Location = new Point(x, y);
                     seat.Enabled = true;
                     seat.Checked = false;
                     this.Controls.Add(seat);
-                    seatStatus[i, j] = seat;
                 }
             }
         }
+        private bool[,] saveSeatState()
+        {
+            bool[,] currentSeatState = new bool[seatRows, seatCols];
+            foreach (Control control in this.Controls)
+            {
+                if (control is CheckBox)
+                {
+                    CheckBox currentSeat = (CheckBox)control;
+                    if (currentSeat.Parent == this)
+                    {
+                        int i = (currentSeat.Top - startY) / (seatHeight + gap);
+                        int j = (currentSeat.Left - startX) / (seatWidth + gap);
+                        currentSeatState[i, j] = currentSeat.Checked;
+                    }
+                }
+            }
+            return currentSeatState;
+        }
+
+        private Button pay;
+        private Button reset;
+        private Button exit;
+        private Button renew;
     }
 }
