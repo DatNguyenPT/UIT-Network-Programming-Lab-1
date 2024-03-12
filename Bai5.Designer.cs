@@ -73,6 +73,7 @@
             pay.TabIndex = 2;
             pay.Text = "Thanh Toán";
             pay.UseVisualStyleBackColor = true;
+            pay.Click += pay_btn_click;
             // 
             // reset
             // 
@@ -183,6 +184,35 @@
                 }
             }
             return currentSeatState;
+        }
+
+        private List<Tuple<int, int>> tickets()
+        {
+            List<Tuple<int, int>> buying = new List<Tuple<int, int>>();
+            foreach (Control control in this.Controls)
+            {
+                if (control is CheckBox)
+                {
+                    CheckBox currentSeat = (CheckBox)control;
+                    if (currentSeat.Parent == this)
+                    {
+                        int i = (currentSeat.Top - startY) / (seatHeight + gap);
+                        int j = (currentSeat.Left - startX) / (seatWidth + gap);
+                        if (currentSeat.Checked && currentSeat.Enabled == true)
+                        {
+                            Tuple<int, int> temp = Tuple.Create(i, j);
+                            buying.Add(temp);
+                        }
+                    }
+                }
+            }
+            return buying;
+        }
+
+        private void pay_btn_click(object sender, EventArgs e)
+        {
+            Bai5Payment bai5Payment = new Bai5Payment();
+            bai5Payment.ShowDialog();
         }
 
         private Button pay;

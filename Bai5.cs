@@ -14,8 +14,8 @@ namespace WinFormsApp1
 {
     public partial class Bai5 : Form
     {
-        public Dictionary<string, double> seatPrices;
-        public Dictionary<string, double> filmPrices;
+        public Dictionary<string, double> seatPrices { get;}
+        public Dictionary<string, double> filmPrices{ get;}
         public System.Windows.Forms.CheckBox[,] seatStatusList;
         public Dictionary<Tuple<string, string>, System.Windows.Forms.CheckBox[,]> filmWithSeatState;
         public Bai5()
@@ -28,6 +28,8 @@ namespace WinFormsApp1
                     mySeatArray[i, j] = new System.Windows.Forms.CheckBox();
                 }
             }
+            Bai5Payment bai5Payment = new Bai5Payment();
+            bai5Payment.PaymentFormClosed += Bai5Payment_FormClosed;
             seatPrices = new Dictionary<string, double>();
             filmPrices = new Dictionary<string, double>();
             seatStatusList = new System.Windows.Forms.CheckBox[seatRows, seatCols];
@@ -79,8 +81,16 @@ namespace WinFormsApp1
             filmWithSeatState.Add(Tuple.Create("Tarot", "3"), seatStatusList);
         }
 
+        public List<Tuple<int, int>> buyTickets()
+        {
+            return tickets();
+        }
+        private void Bai5Payment_FormClosed(object sender, EventArgs e)
+        {
+            renewStatus();
+        }
         // Only call when finish payment
-        private void updateSeatState()
+        public void updateSeatState()
         {
             Tuple<string, string> temp = Tuple.Create(filmList.SelectedText, section.SelectedText);
             bool[,] newStatus = saveSeatState();
@@ -100,12 +110,16 @@ namespace WinFormsApp1
         }
 
         // After hitting renew button
-        private void renewStatus()
+        public void renewStatus()
         {
             Tuple<string, string> temp = Tuple.Create(filmList.SelectedText, section.SelectedText);
             createSeats(filmWithSeatState[temp]);
         }
 
+        public string getFilmName()
+        {
+            return filmList.SelectedText;
+        }
 
 
     }
