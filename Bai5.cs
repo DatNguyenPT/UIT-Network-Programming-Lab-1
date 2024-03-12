@@ -12,54 +12,79 @@ namespace WinFormsApp1
 {
     public partial class Bai5 : Form
     {
-        Dictionary<string, long> filmPrice;
-        Dictionary<Tuple<string, int>, bool[,]> theatre;
+        public Dictionary<string, double> seatPrices;
+        public Dictionary<string, double> filmPrices;
+        public CheckBox[,] seatStatusList;
+        public Dictionary<Tuple<string, string>, CheckBox[,]> filmWithSeatState;
         public Bai5()
         {
+            seatPrices = new Dictionary<string, double>();
+            filmPrices = new Dictionary<string, double>();
+            seatStatusList = new CheckBox[seatRows, seatCols];
+            filmWithSeatState = new Dictionary<Tuple<string, string>, CheckBox[,]>();
             InitializeComponent();
             Load += Bai5_Load;
-            filmPrice = new Dictionary<string, long>();
-            theatre = new Dictionary<Tuple<string, int>, bool[,]>();
+            createSeats();
+            seatStatusList = seatStatus;
         }
-        private void Bai5_Load(object sender, EventArgs e) {
-            filmInfo();
-        }
-        private void filmInfo()
-        {
-            filmPrice.Add("Đào, phở và Piano", 45000);
-            filmPrice.Add("Mai", 100000);
-            filmPrice.Add("Gặp lại chị bầu", 70000);
-            filmPrice.Add("Tarot", 90000);
 
+        private void Bai5_Load(object sender, EventArgs e) {
+            // Set seat prices
+            seatPrices.Clear();
+            seatPrices.Add("A1", 0.25);
+            seatPrices.Add("A5", 0.25);
+            seatPrices.Add("C1", 0.25);
+            seatPrices.Add("C5", 0.25);
+            seatPrices.Add("A2", 1);
+            seatPrices.Add("A3", 1);
+            seatPrices.Add("A4", 1);
+            seatPrices.Add("C2", 1);
+            seatPrices.Add("C3", 1);
+            seatPrices.Add("C4", 1);
+            seatPrices.Add("B1", 2);
+            seatPrices.Add("B2", 2);
+            seatPrices.Add("B3", 2);
+            seatPrices.Add("B4", 2);
+            seatPrices.Add("B5", 2);
+
+            // Set film prices
+            filmPrices.Clear();
+            filmPrices.Add("Đào, phở và Piano", 45000);
+            filmPrices.Add("Mai", 100000);
+            filmPrices.Add("Gặp lại chị bầu", 70000);
+            filmPrices.Add("Tarot", 90000);
+
+            // Set film default seat state
+            filmWithSeatState.Clear();
             for (int i = 1; i <= 3; i++)
             {
-                bool[,] seatState1;
-                if (seatDatabase.TryGetValue(Tuple.Create("Đào, phở và Piano", i.ToString()), out seatState1))
-                {
-                    theatre.Add(Tuple.Create("Đào, phở và Piano", i), seatState1);
-                }
+                filmWithSeatState.Add(Tuple.Create("Đào, phở và Piano", i.ToString()), seatStatusList);
             }
-
             for (int i = 2; i <= 3; i++)
             {
-                bool[,] seatState2;
-                if (seatDatabase.TryGetValue(Tuple.Create("Mai", i.ToString()), out seatState2))
+                filmWithSeatState.Add(Tuple.Create("Mai", i.ToString()), seatStatusList);
+            }
+            filmWithSeatState.Add(Tuple.Create("Gặp lại chị bầu", "1"), seatStatusList);
+            filmWithSeatState.Add(Tuple.Create("Tarot", "3"), seatStatusList);
+        }
+
+        private void saveSeatState()
+        {
+            CheckBox[,] currentSeatState = new CheckBox[seatRows, seatCols];
+            for (int i = 0; i < seatRows; i++)
+            {
+                for (int j = 0; j < seatCols; j++)
                 {
-                    theatre.Add(Tuple.Create("Mai", i), seatState2);
+                    currentSeatState[i, j] = 
                 }
             }
+        }
 
-            bool[,] seatState3;
-            if (seatDatabase.TryGetValue(Tuple.Create("Gặp lại chị bầu", "1"), out seatState3))
-            {
-                theatre.Add(Tuple.Create("Gặp lại chị bầu", 1), seatState3);
-            }
-
-            bool[,] seatState4;
-            if (seatDatabase.TryGetValue(Tuple.Create("Tarot", "3"), out seatState4))
-            {
-                theatre.Add(Tuple.Create("Tarot", 3), seatState4);
-            }
+        private void updateSeatState()
+        {
+            Tuple<string, string> temp = Tuple.Create(filmList.SelectedText, section.SelectedText);
+            CheckBox[,] newStatus = filmWithSeatState[temp];
+            // Not Finished
         }
 
     }

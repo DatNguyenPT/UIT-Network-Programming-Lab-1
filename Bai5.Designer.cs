@@ -2,77 +2,74 @@
 {
     partial class Bai5
     {
-        private int row = 3;
-        private int col = 5;
-
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Bai5));
             filmList = new ComboBox();
-            theatreNumber = new ComboBox();
-            payment = new Button();
-            reset = new Button();
-            exit = new Button();
+            section = new ComboBox();
+            labelX = 264;
+            labelY = 0;
+            
             SuspendLayout();
             // 
             // filmList
             // 
+            List<String> films = new List<string>
+            {
+                "Đào, phở và Piano",
+                "Mai",
+                "Gặp lại chị bầu",
+                "Tarot"
+            };
+            filmList.DataSource = films;
+            filmList.DropDownStyle = ComboBoxStyle.DropDownList;
             filmList.FormattingEnabled = true;
-            filmList.Items.AddRange(new object[] { "Đào, phở và Piano", "Mai", "Gặp lại chị bầu", "Tarot" });
-            filmList.Location = new Point(184, 93);
+            filmList.Location = new Point(264, 67);
             filmList.Name = "filmList";
-            filmList.Size = new Size(350, 28);
+            filmList.Size = new Size(246, 28);
             filmList.TabIndex = 0;
-            filmList.Text = "Chọn Phim";
-            createSeats();
             // 
-            // theatreNumber
+            // section
             // 
-            theatreNumber.FormattingEnabled = true;
-            theatreNumber.Items.AddRange(new object[] { "1", "2", "3" });
-            theatreNumber.Location = new Point(609, 93);
-            theatreNumber.Name = "theatreNumber";
-            theatreNumber.Size = new Size(151, 28);
-            theatreNumber.TabIndex = 1;
-            theatreNumber.Text = "Chọn phòng chiếu";
-            // 
-            // payment button
-            // 
-            payment.Location = new Point(609, 160);
-            payment.Name = "button1";
-            payment.Size = new Size(151, 41);
-            payment.TabIndex = 2;
-            payment.Text = "Thanh toán";
-            payment.UseVisualStyleBackColor = true;
-            // 
-            // reset button
-            // 
-            reset.Location = new Point(609, 218);
-            reset.Name = "button2";
-            reset.Size = new Size(151, 44);
-            reset.TabIndex = 3;
-            reset.Text = "Reset ghế ngồi";
-            reset.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            exit.Location = new Point(609, 279);
-            exit.Name = "button3";
-            exit.Size = new Size(151, 40);
-            exit.TabIndex = 4;
-            exit.Text = "Thoát";
-            exit.UseVisualStyleBackColor = true;
+            List<String> sectionOrder = new List<string> { "1", "2", "3" };
+            section.DataSource = sectionOrder;
+            section.DropDownStyle = ComboBoxStyle.DropDownList;
+            section.FormattingEnabled = true;
+            section.Location = new Point(613, 67);
+            section.Name = "section";
+            section.Size = new Size(151, 28);
+            section.TabIndex = 1;
             // 
             // Bai5
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(exit);
-            Controls.Add(reset);
-            Controls.Add(payment);
-            Controls.Add(theatreNumber);
+            Controls.Add(section);
             Controls.Add(filmList);
             Name = "Bai5";
             Text = "Bai5";
@@ -80,44 +77,45 @@
             ResumeLayout(false);
         }
 
+        #endregion
+
         private ComboBox filmList;
-        private bool[,] seatStatus;
-        private ComboBox theatreNumber;
-        private Button payment;
-        private Button reset;
-        private Button exit;
-        private List<List<CheckBox>> seats = new List<List<CheckBox>>();
-        public Dictionary<Tuple<string, string>, bool[,]> seatDatabase = new Dictionary<Tuple<string, string>, bool[,]>();
+        private ComboBox section;
+        private int seatRows = 3;
+        private int seatCols = 5;
+        int labelX;
+        int labelY;
+        private CheckBox[,] seatStatus;
         private void createSeats()
         {
-            string selectedFilm = filmList.SelectedItem.ToString();
-            string selectedTheatre = theatreNumber.SelectedItem.ToString();
-            seatStatus = new bool[row, col];
+            seatStatus = new CheckBox[seatRows, seatCols];
             int seatWidth = 40;
             int seatHeight = 40;
-            int gapX = 50;
-            for (int i = 0; i < row; i++)
+            int gap = 10; 
+            int startX = (this.ClientSize.Width - (seatCols * (seatWidth + gap) - gap)) / 2;
+            int startY = 240; 
+            string[] alphabet = { "A", "B", "C"};
+            for (int i = 0; i < seatRows; i++)
             {
-                List<CheckBox> row = new List<CheckBox>();
-
-                for (int j = 0; j < col; j++)
+                int y = startY + (seatHeight + gap) * i;
+                Label label = new Label();
+                label.Text = alphabet[i];
+                label.AutoSize = true;
+                label.Location = new Point(startX - 30, y + seatHeight / 2 - label.Height / 2);
+                this.Controls.Add(label);
+                for (int j = 0; j < seatCols; j++)
                 {
+                    int x = startX + (seatWidth + gap) * j;
+
                     CheckBox seat = new CheckBox();
-                    seat.Enabled = true;
-                    row.Add(seat);
-                    int x = 100 + j * (seatWidth + gapX);
-                    int y = 200 + i * seatHeight;
+                    seat.Size = new System.Drawing.Size(seatWidth, seatHeight);
                     seat.Location = new Point(x, y);
-                    seat.Size = new Size(seatWidth, seatHeight);
+                    seat.Enabled = true;
+                    seat.Checked = false;
                     this.Controls.Add(seat);
-                    seatStatus[i, j] = seat.Checked;
+                    seatStatus[i, j] = seat;
                 }
-                seats.Add(row);
-                seatDatabase.Add(Tuple.Create(selectedFilm, selectedTheatre), seatStatus);
             }
         }
-
-
-
     }
 }
