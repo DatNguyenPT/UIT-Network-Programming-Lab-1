@@ -87,38 +87,50 @@ namespace WinFormsApp1
         }
         private void Bai5Payment_FormClosed(object sender, EventArgs e)
         {
-            renewStatus();
+            renewStatus(sender, e);
         }
         // Only call when finish payment
         public void updateSeatState()
         {
             Tuple<string, string> temp = Tuple.Create(filmList.SelectedText, section.SelectedText);
             bool[,] newStatus = saveSeatState();
-            System.Windows.Forms.CheckBox[,] currentStatus = filmWithSeatState[temp];
-            for (int i = 0; i < currentStatus.GetLength(0); i++)
+            if (filmWithSeatState.ContainsKey(temp))
             {
-                for (int j = 0; j < currentStatus.GetLength(1); j++)
+                System.Windows.Forms.CheckBox[,] currentStatus = filmWithSeatState[temp];
+                for (int i = 0; i < currentStatus.GetLength(0); i++)
                 {
-                    currentStatus[i, j].Checked = newStatus[i, j];
-                    if (newStatus[i, j])
+                    for (int j = 0; j < currentStatus.GetLength(1); j++)
                     {
-                        currentStatus[i, j].Enabled = false;
+                        currentStatus[i, j].Checked = newStatus[i, j];
+                        currentStatus[i, j].Enabled = !newStatus[i, j];
                     }
                 }
+                filmWithSeatState[temp] = currentStatus;
             }
-            filmWithSeatState[temp] = currentStatus;
         }
 
+
+
         // After hitting renew button
-        public void renewStatus()
+        private void renewStatus(object sender, EventArgs e)
         {
-            Tuple<string, string> temp = Tuple.Create(filmList.SelectedText, section.SelectedText);
-            createSeats(filmWithSeatState[temp]);
+            string selectedFilm = filmList.SelectedItem?.ToString();
+            string selectedSection = section.SelectedItem?.ToString();
+            if (selectedFilm != null && selectedSection != null)
+            {
+                Tuple<string, string> temp = Tuple.Create(selectedFilm, selectedSection);
+                if (filmWithSeatState.ContainsKey(temp))
+                {
+                    System.Windows.Forms.CheckBox[,] seatArray = filmWithSeatState[temp];
+                    createSeats(seatArray);
+                }
+            }
         }
+
 
         public string getFilmName()
         {
-            return filmList.SelectedText;
+            return filmList.SelectedItem?.ToString();
         }
 
 

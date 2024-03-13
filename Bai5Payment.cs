@@ -39,7 +39,7 @@ namespace WinFormsApp1
                         type = "C";
                         break;
                 }
-                seatPosition.Add(type + seat.Item2);
+                seatPosition.Add(type + (seat.Item2 + 1)); // Start with index 0
             }
             result += $"Các vé lần lượt là: {string.Join(", ", seatPosition)}\n";
 
@@ -57,13 +57,13 @@ namespace WinFormsApp1
 
         private void FinishButton_Click(object sender, EventArgs e)
         {
-            Bai5 bai5 = (Bai5)this.Owner; // Truy cập vào instance hiện tại của Bai5
+            Bai5 bai5 = (Bai5)this.Owner; // Access to current Bai5 instance
             if (bai5 != null)
             {
                 List<Tuple<int, int>> selectedSeats = bai5.buyTickets();
                 Dictionary<string, double> filmPrices = bai5.filmPrices;
                 Dictionary<string, double> seatPrices = bai5.seatPrices;
-                string filmName = bai5.getFilmName();
+                string filmName = this.filmName;
                 DisplayTicketInfo(selectedSeats, filmPrices, seatPrices, filmName);
                 bai5.updateSeatState();
             }
@@ -71,7 +71,9 @@ namespace WinFormsApp1
 
         private void Bai5Payment_FormClosed(object sender, FormClosedEventArgs e)
         {
-            PaymentFormClosed?.Invoke(this, EventArgs.Empty); // Khi Bai5Payment đóng lại, thông báo cho Bai5
+            PaymentFormClosed?.Invoke(this, EventArgs.Empty);
         }
+
+        public string filmName { get; set; }
     }
 }

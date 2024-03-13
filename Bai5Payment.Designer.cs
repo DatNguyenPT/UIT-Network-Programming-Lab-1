@@ -56,9 +56,9 @@ namespace WinFormsApp1
             // ticketInfo
             // 
             ticketInfo.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            ticketInfo.Location = new Point(160, 156);
+            ticketInfo.Location = new Point(86, 110);
             ticketInfo.Name = "ticketInfo";
-            ticketInfo.Size = new Size(410, 127);
+            ticketInfo.Size = new Size(628, 209);
             ticketInfo.TabIndex = 2;
             // 
             // finish

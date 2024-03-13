@@ -101,6 +101,7 @@
             renew.TabIndex = 5;
             renew.Text = "Làm Mới";
             renew.UseVisualStyleBackColor = true;
+            renew.Click += renewStatus;
             // 
             // Bai5
             // 
@@ -212,6 +213,8 @@
         private void pay_btn_click(object sender, EventArgs e)
         {
             Bai5Payment bai5Payment = new Bai5Payment();
+            bai5Payment.Owner = this;
+            bai5Payment.filmName = getFilmName();
             bai5Payment.ShowDialog();
         }
 
