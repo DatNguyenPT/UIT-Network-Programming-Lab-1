@@ -34,6 +34,7 @@
             pay = new Button();
             reset = new Button();
             exit = new Button();
+            theatreAccess = new Button();
             SuspendLayout();
             // 
             // filmList
@@ -58,7 +59,7 @@
             // 
             List<string> sectionOrder = new List<string>()
             {
-                "1", "2", "3"   
+                "1", "2", "3"
             };
             section.DataSource = sectionOrder;
             section.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -96,11 +97,22 @@
             exit.Text = "Thoát";
             exit.UseVisualStyleBackColor = true;
             // 
+            // theatreAccess
+            // 
+            theatreAccess.Location = new Point(334, 124);
+            theatreAccess.Name = "theatreAccess";
+            theatreAccess.Size = new Size(94, 29);
+            theatreAccess.TabIndex = 5;
+            theatreAccess.Text = "->";
+            theatreAccess.UseVisualStyleBackColor = true;
+            theatreAccess.Click += theatreAccess_Click;
+            // 
             // Bai5
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(theatreAccess);
             Controls.Add(exit);
             Controls.Add(reset);
             Controls.Add(pay);
@@ -214,5 +226,6 @@
         private Button pay;
         private Button reset;
         private Button exit;
+        private Button theatreAccess;
     }
 }

@@ -71,7 +71,6 @@ namespace WinFormsApp1
                 finish.Text = "Kết thúc";
                 if (count == 2)
                 {
-
                     bai5.updateSeatState();
                     this.Close();
                 }

@@ -134,21 +134,76 @@ namespace WinFormsApp1
                     break;
                 case "Mai":
                     sectionLimit.Clear();
-                    sectionLimit = new List<string>() {"2", "3" };
+                    sectionLimit = new List<string>() { "2", "3" };
                     section.DataSource = sectionLimit;
                     break;
                 case "Gặp lại chị bầu":
                     sectionLimit.Clear();
-                    sectionLimit = new List<string>() {"1"};
+                    sectionLimit = new List<string>() { "1" };
                     section.DataSource = sectionLimit;
                     break;
                 case "Tarot":
                     sectionLimit.Clear();
-                    sectionLimit = new List<string>() {"3"};
+                    sectionLimit = new List<string>() { "3" };
                     section.DataSource = sectionLimit;
                     break;
             }
         }
+
+
+        private void CreateSeatsForSelectedFilmAndSection()
+        {
+            string selectedFilm = filmList.SelectedItem?.ToString();
+            string selectedSection = section.SelectedItem?.ToString();
+
+            if (selectedFilm != null && selectedSection != null)
+            {
+                Tuple<string, string> filmSectionTuple = Tuple.Create(selectedFilm, selectedSection);
+
+                if (filmWithSeatState.ContainsKey(filmSectionTuple))
+                {
+                    System.Windows.Forms.CheckBox[,] seatStatusArray = filmWithSeatState[filmSectionTuple];
+                    ClearSeatCheckboxes();
+                    createSeats(seatStatusArray);
+                }
+                else
+                {
+                    MessageBox.Show("No seat information found for the selected film and section.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select both film and section.");
+            }
+        }
+
+        private void ClearSeatCheckboxes()
+        {
+            List<Control> controlsToRemove = new List<Control>();
+
+            foreach (Control control in this.Controls)
+            {
+                if (control is System.Windows.Forms.CheckBox)
+                {
+                    controlsToRemove.Add(control);
+                }
+            }
+
+            foreach (Control control in controlsToRemove)
+            {
+                this.Controls.Remove(control);
+                control.Dispose();
+            }
+        }
+
+
+
+        private void theatreAccess_Click(object sender, EventArgs e)
+        {
+            CreateSeatsForSelectedFilmAndSection();
+        }
+
+
 
         public string getFilmName()
         {
