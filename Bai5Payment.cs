@@ -54,9 +54,10 @@ namespace WinFormsApp1
 
         // Event handler for Finish button click
         public event EventHandler PaymentFormClosed;
-
+        public int count = 0;
         private void FinishButton_Click(object sender, EventArgs e)
         {
+            ++count;
             Bai5 bai5 = (Bai5)this.Owner; // Access to current Bai5 instance
             if (bai5 != null)
             {
@@ -66,6 +67,14 @@ namespace WinFormsApp1
                 string filmName = this.filmName;
                 DisplayTicketInfo(selectedSeats, filmPrices, seatPrices, filmName);
                 bai5.updateSeatState();
+                bai5.disableCheckedSeats();
+                finish.Text = "Kết thúc";
+                if (count == 2)
+                {
+
+                    bai5.updateSeatState();
+                    this.Close();
+                }
             }
         }
 

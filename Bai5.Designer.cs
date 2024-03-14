@@ -34,29 +34,32 @@
             pay = new Button();
             reset = new Button();
             exit = new Button();
-            renew = new Button();
             SuspendLayout();
             // 
             // filmList
             // 
-            List<string> films = new List<string>()
+            List<string> film = new List<string>()
             {
                 "Đào, phở và Piano",
                 "Mai",
                 "Gặp lại chị bầu",
                 "Tarot"
             };
-            filmList.DataSource = films;
+            filmList.DataSource = film;
             filmList.DropDownStyle = ComboBoxStyle.DropDownList;
             filmList.FormattingEnabled = true;
             filmList.Location = new Point(264, 67);
             filmList.Name = "filmList";
             filmList.Size = new Size(246, 28);
             filmList.TabIndex = 0;
+            filmList.SelectedIndexChanged += limitTheatre;
             // 
             // section
             // 
-            List<String> sectionOrder = new List<string>() { "1", "2", "3" };
+            List<string> sectionOrder = new List<string>()
+            {
+                "1", "2", "3"   
+            };
             section.DataSource = sectionOrder;
             section.DropDownStyle = ComboBoxStyle.DropDownList;
             section.FormattingEnabled = true;
@@ -93,22 +96,11 @@
             exit.Text = "Thoát";
             exit.UseVisualStyleBackColor = true;
             // 
-            // renew
-            // 
-            renew.Location = new Point(613, 348);
-            renew.Name = "renew";
-            renew.Size = new Size(151, 40);
-            renew.TabIndex = 5;
-            renew.Text = "Làm Mới";
-            renew.UseVisualStyleBackColor = true;
-            renew.Click += renewStatus;
-            // 
             // Bai5
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(renew);
             Controls.Add(exit);
             Controls.Add(reset);
             Controls.Add(pay);
@@ -140,6 +132,7 @@
             {
                 seatRows = seatArray.GetLength(0);
                 seatCols = seatArray.GetLength(1);
+                seatStatus = new CheckBox[seatRows, seatCols];
                 seatStatus = seatArray;
             }
 
@@ -221,6 +214,5 @@
         private Button pay;
         private Button reset;
         private Button exit;
-        private Button renew;
     }
 }

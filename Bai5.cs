@@ -14,8 +14,8 @@ namespace WinFormsApp1
 {
     public partial class Bai5 : Form
     {
-        public Dictionary<string, double> seatPrices { get;}
-        public Dictionary<string, double> filmPrices{ get;}
+        public Dictionary<string, double> seatPrices { get; }
+        public Dictionary<string, double> filmPrices { get; }
         public System.Windows.Forms.CheckBox[,] seatStatusList;
         public Dictionary<Tuple<string, string>, System.Windows.Forms.CheckBox[,]> filmWithSeatState;
         public Bai5()
@@ -37,7 +37,7 @@ namespace WinFormsApp1
             InitializeComponent();
             Load += Bai5_Load;
             createSeats(mySeatArray);
-            seatStatusList = seatStatus;
+
         }
 
         private void Bai5_Load(object sender, EventArgs e)
@@ -85,11 +85,8 @@ namespace WinFormsApp1
         {
             return tickets();
         }
-        private void Bai5Payment_FormClosed(object sender, EventArgs e)
-        {
-            renewStatus(sender, e);
-        }
-        // Only call when finish payment
+        private void Bai5Payment_FormClosed(object sender, EventArgs e) { }
+        // Only called when finish payment
         public void updateSeatState()
         {
             Tuple<string, string> temp = Tuple.Create(filmList.SelectedText, section.SelectedText);
@@ -109,24 +106,49 @@ namespace WinFormsApp1
             }
         }
 
-
-
-        // After hitting renew button
-        private void renewStatus(object sender, EventArgs e)
+        public void disableCheckedSeats()
         {
-            string selectedFilm = filmList.SelectedItem?.ToString();
-            string selectedSection = section.SelectedItem?.ToString();
-            if (selectedFilm != null && selectedSection != null)
+            foreach (Control control in this.Controls)
             {
-                Tuple<string, string> temp = Tuple.Create(selectedFilm, selectedSection);
-                if (filmWithSeatState.ContainsKey(temp))
+                if (control is System.Windows.Forms.CheckBox)
                 {
-                    System.Windows.Forms.CheckBox[,] seatArray = filmWithSeatState[temp];
-                    createSeats(seatArray);
+                    System.Windows.Forms.CheckBox currentSeat = (System.Windows.Forms.CheckBox)control;
+                    if (currentSeat.Checked)
+                    {
+                        currentSeat.Enabled = false;
+                    }
                 }
             }
         }
 
+        public void limitTheatre(Object sender, EventArgs e)
+        {
+            string film = filmList.SelectedItem.ToString();
+            List<string> sectionLimit = new List<string>();
+            switch (film)
+            {
+                case "Đào, phở và Piano":
+                    sectionLimit.Clear();
+                    sectionLimit = new List<string>() { "1", "2", "3" };
+                    section.DataSource = sectionLimit;
+                    break;
+                case "Mai":
+                    sectionLimit.Clear();
+                    sectionLimit = new List<string>() {"2", "3" };
+                    section.DataSource = sectionLimit;
+                    break;
+                case "Gặp lại chị bầu":
+                    sectionLimit.Clear();
+                    sectionLimit = new List<string>() {"1"};
+                    section.DataSource = sectionLimit;
+                    break;
+                case "Tarot":
+                    sectionLimit.Clear();
+                    sectionLimit = new List<string>() {"3"};
+                    section.DataSource = sectionLimit;
+                    break;
+            }
+        }
 
         public string getFilmName()
         {
