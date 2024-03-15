@@ -17,7 +17,7 @@ namespace WinFormsApp1
         public Dictionary<string, double> seatPrices { get; }
         public Dictionary<string, double> filmPrices { get; }
         public System.Windows.Forms.CheckBox[,] seatStatusList;
-        public Dictionary<Tuple<string, string>, System.Windows.Forms.CheckBox[,]> filmWithSeatState;
+        public Dictionary<Tuple<string, string>, System.Windows.Forms.CheckBox[,]> filmWithSeatState { get; }
         public Bai5()
         {
             System.Windows.Forms.CheckBox[,] mySeatArray = new System.Windows.Forms.CheckBox[seatRows, seatCols];
@@ -71,15 +71,27 @@ namespace WinFormsApp1
             filmWithSeatState.Clear();
             for (int i = 1; i <= 3; i++)
             {
-                filmWithSeatState.Add(Tuple.Create("Đào, phở và Piano", i.ToString()), seatStatusList);
+                System.Windows.Forms.CheckBox[,] seatArray1 = new System.Windows.Forms.CheckBox[seatRows, seatCols];
+                createSeats(seatArray1);
+                filmWithSeatState.Add(Tuple.Create("Đào, phở và Piano", i.ToString()), seatArray1);
             }
             for (int i = 2; i <= 3; i++)
             {
-                filmWithSeatState.Add(Tuple.Create("Mai", i.ToString()), seatStatusList);
+                System.Windows.Forms.CheckBox[,] seatArray2 = new System.Windows.Forms.CheckBox[seatRows, seatCols];
+                createSeats(seatArray2);
+                filmWithSeatState.Add(Tuple.Create("Mai", i.ToString()), seatArray2);
             }
-            filmWithSeatState.Add(Tuple.Create("Gặp lại chị bầu", "1"), seatStatusList);
-            filmWithSeatState.Add(Tuple.Create("Tarot", "3"), seatStatusList);
+            System.Windows.Forms.CheckBox[,] seatArray3 = new System.Windows.Forms.CheckBox[seatRows, seatCols];
+            createSeats(seatArray3);
+            filmWithSeatState.Add(Tuple.Create("Gặp lại chị bầu", "1"), seatArray3);
+
+            System.Windows.Forms.CheckBox[,] seatArray4 = new System.Windows.Forms.CheckBox[seatRows, seatCols];
+            createSeats(seatArray4);
+            filmWithSeatState.Add(Tuple.Create("Tarot", "3"), seatArray4);
+            
+
         }
+
 
         public List<Tuple<int, int>> buyTickets()
         {
@@ -151,7 +163,20 @@ namespace WinFormsApp1
         }
 
 
-        private void CreateSeatsForSelectedFilmAndSection()
+
+        private void ClearSeatCheckboxes()
+        {
+            foreach (Control control in this.Controls)
+            {
+                if (control is System.Windows.Forms.CheckBox)
+                {
+                    this.Controls.Remove(control);
+                    control.Dispose();
+                }
+            }
+        }
+
+        private void theatreAccess_Click(object sender, EventArgs e)
         {
             string selectedFilm = filmList.SelectedItem?.ToString();
             string selectedSection = section.SelectedItem?.ToString();
@@ -162,9 +187,9 @@ namespace WinFormsApp1
 
                 if (filmWithSeatState.ContainsKey(filmSectionTuple))
                 {
-                    System.Windows.Forms.CheckBox[,] seatStatusArray = filmWithSeatState[filmSectionTuple];
+                    System.Windows.Forms.CheckBox[,] seatArray = filmWithSeatState[filmSectionTuple];
                     ClearSeatCheckboxes();
-                    createSeats(seatStatusArray);
+                    createSeats(seatArray);
                 }
                 else
                 {
@@ -177,37 +202,42 @@ namespace WinFormsApp1
             }
         }
 
-        private void ClearSeatCheckboxes()
+        private void CreateSeatsForSelectedFilmAndSection()
         {
-            List<Control> controlsToRemove = new List<Control>();
+            string selectedFilm = filmList.SelectedItem?.ToString();
+            string selectedSection = section.SelectedItem?.ToString();
 
-            foreach (Control control in this.Controls)
+            if (selectedFilm != null && selectedSection != null)
             {
-                if (control is System.Windows.Forms.CheckBox)
+                Tuple<string, string> filmSectionTuple = Tuple.Create(selectedFilm, selectedSection);
+
+                if (filmWithSeatState.ContainsKey(filmSectionTuple))
                 {
-                    controlsToRemove.Add(control);
+                    System.Windows.Forms.CheckBox[,] seatArray = filmWithSeatState[filmSectionTuple];
+                    updateSeatState();
+                }
+                else
+                {
+                    MessageBox.Show("No seat information found for the selected film and section.");
                 }
             }
-
-            foreach (Control control in controlsToRemove)
+            else
             {
-                this.Controls.Remove(control);
-                control.Dispose();
+                MessageBox.Show("Please select both film and section.");
             }
         }
 
-
-
-        private void theatreAccess_Click(object sender, EventArgs e)
-        {
-            CreateSeatsForSelectedFilmAndSection();
-        }
 
 
 
         public string getFilmName()
         {
             return filmList.SelectedItem?.ToString();
+        }
+
+        public string getSection()
+        {
+            return section.SelectedItem?.ToString();
         }
 
 

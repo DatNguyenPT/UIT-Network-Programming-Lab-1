@@ -142,18 +142,18 @@
         {
             if (seatArray.GetLength(0) != seatRows || seatArray.GetLength(1) != seatCols)
             {
-                seatRows = seatArray.GetLength(0);
-                seatCols = seatArray.GetLength(1);
                 seatStatus = new CheckBox[seatRows, seatCols];
                 seatStatus = seatArray;
             }
+            int rows = seatArray.GetLength(0);
+            int cols = seatArray.GetLength(1);
 
             int startXTemp = (this.ClientSize.Width - (seatCols * (seatWidth + gap) - gap)) / 2;
             int startYTemp = 240;
             startX = startXTemp;
             startY = startYTemp;
             string[] alphabet = { "A", "B", "C" };
-            for (int i = 0; i < seatRows; i++)
+            for (int i = 0; i < rows; i++)
             {
                 int y = startYTemp + (seatHeight + gap) * i;
                 Label label = new Label();
@@ -161,9 +161,10 @@
                 label.AutoSize = true;
                 label.Location = new Point(startX - 30, y + seatHeight / 2 - label.Height / 2);
                 this.Controls.Add(label);
-                for (int j = 0; j < seatCols; j++)
+                for (int j = 0; j < cols; j++)
                 {
                     int x = startXTemp + (seatWidth + gap) * j;
+                    seatArray[i, j] = new CheckBox();
                     CheckBox seat = seatArray[i, j];
                     seat.Size = new Size(seatWidth, seatHeight);
                     seat.Location = new Point(x, y);
@@ -173,7 +174,7 @@
                 }
             }
         }
-        private bool[,] saveSeatState()
+        public bool[,] saveSeatState()
         {
             bool[,] currentSeatState = new bool[seatRows, seatCols];
             foreach (Control control in this.Controls)
@@ -214,6 +215,7 @@
             }
             return buying;
         }
+
 
         private void pay_btn_click(object sender, EventArgs e)
         {
