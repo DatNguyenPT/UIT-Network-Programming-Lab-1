@@ -67,7 +67,7 @@ namespace WinFormsApp1
             finish.Name = "finish";
             finish.Size = new Size(115, 50);
             finish.TabIndex = 3;
-            finish.Text = "finish";
+            finish.Text = "Tính Tiền";
             finish.UseVisualStyleBackColor = true;
             finish.Click += FinishButton_Click;
             // 

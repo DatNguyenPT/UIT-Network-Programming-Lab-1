@@ -66,8 +66,8 @@ namespace WinFormsApp1
                 Dictionary<string, double> seatPrices = bai5.seatPrices;
                 string filmName = this.filmName;
                 DisplayTicketInfo(selectedSeats, filmPrices, seatPrices, filmName);
-                bai5.updateSeatState();
                 bai5.disableCheckedSeats();
+                bai5.updateSeatState();
                 finish.Text = "Kết thúc";
                 if (count == 2)
                 {

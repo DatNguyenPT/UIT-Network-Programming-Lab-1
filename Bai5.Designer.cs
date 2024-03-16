@@ -164,12 +164,24 @@
                 for (int j = 0; j < cols; j++)
                 {
                     int x = startXTemp + (seatWidth + gap) * j;
-                    seatArray[i, j] = new CheckBox();
                     CheckBox seat = seatArray[i, j];
-                    seat.Size = new Size(seatWidth, seatHeight);
-                    seat.Location = new Point(x, y);
-                    seat.Enabled = true;
-                    seat.Checked = false;
+                    if (seatArray[i, j] == null)
+                    {
+                        seatArray[i, j] = new CheckBox();
+                        seat.Size = new Size(seatWidth, seatHeight);
+                        seat.Location = new Point(x, y);
+                        seat.Enabled = true;
+                        seat.Checked = true;
+
+                    }
+                    else
+                    {
+                        seat.Size = new Size(seatWidth, seatHeight);
+                        seat.Location = new Point(x, y);
+                        seat.Enabled = seatArray[i, j].Enabled;
+                        seat.Checked = seatArray[i, j].Checked;
+                    }
+                    
                     this.Controls.Add(seat);
                 }
             }

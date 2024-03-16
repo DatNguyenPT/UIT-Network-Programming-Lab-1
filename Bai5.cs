@@ -72,26 +72,34 @@ namespace WinFormsApp1
             for (int i = 1; i <= 3; i++)
             {
                 System.Windows.Forms.CheckBox[,] seatArray1 = new System.Windows.Forms.CheckBox[seatRows, seatCols];
-                createSeats(seatArray1);
+                InitializeSeatArray(seatArray1); // Initialize checkboxes
                 filmWithSeatState.Add(Tuple.Create("Đào, phở và Piano", i.ToString()), seatArray1);
             }
             for (int i = 2; i <= 3; i++)
             {
                 System.Windows.Forms.CheckBox[,] seatArray2 = new System.Windows.Forms.CheckBox[seatRows, seatCols];
-                createSeats(seatArray2);
+                InitializeSeatArray(seatArray2); // Initialize checkboxes
                 filmWithSeatState.Add(Tuple.Create("Mai", i.ToString()), seatArray2);
             }
             System.Windows.Forms.CheckBox[,] seatArray3 = new System.Windows.Forms.CheckBox[seatRows, seatCols];
-            createSeats(seatArray3);
+            InitializeSeatArray(seatArray3); // Initialize checkboxes
             filmWithSeatState.Add(Tuple.Create("Gặp lại chị bầu", "1"), seatArray3);
 
             System.Windows.Forms.CheckBox[,] seatArray4 = new System.Windows.Forms.CheckBox[seatRows, seatCols];
-            createSeats(seatArray4);
+            InitializeSeatArray(seatArray4); // Initialize checkboxes
             filmWithSeatState.Add(Tuple.Create("Tarot", "3"), seatArray4);
-            
-
         }
 
+        private void InitializeSeatArray(System.Windows.Forms.CheckBox[,] seatArray)
+        {
+            for (int i = 0; i < seatRows; i++)
+            {
+                for (int j = 0; j < seatCols; j++)
+                {
+                    seatArray[i, j] = new System.Windows.Forms.CheckBox();
+                }
+            }
+        }
 
         public List<Tuple<int, int>> buyTickets()
         {
@@ -101,14 +109,15 @@ namespace WinFormsApp1
         // Only called when finish payment
         public void updateSeatState()
         {
-            Tuple<string, string> temp = Tuple.Create(filmList.SelectedText, section.SelectedText);
+            Tuple<string, string> temp = Tuple.Create(filmList.SelectedItem.ToString(), section.SelectedItem.ToString());
             bool[,] newStatus = saveSeatState();
             if (filmWithSeatState.ContainsKey(temp))
             {
-                System.Windows.Forms.CheckBox[,] currentStatus = filmWithSeatState[temp];
-                for (int i = 0; i < currentStatus.GetLength(0); i++)
+                System.Windows.Forms.CheckBox[,] currentStatus = new System.Windows.Forms.CheckBox[seatRows, seatCols];
+                currentStatus = filmWithSeatState[temp];
+                for (int i = 0; i < seatRows; i++)
                 {
-                    for (int j = 0; j < currentStatus.GetLength(1); j++)
+                    for (int j = 0; j < seatCols; j++)
                     {
                         currentStatus[i, j].Checked = newStatus[i, j];
                         currentStatus[i, j].Enabled = !newStatus[i, j];
@@ -166,15 +175,25 @@ namespace WinFormsApp1
 
         private void ClearSeatCheckboxes()
         {
+            List<Control> controlsToRemove = new List<Control>();
+
+            // Find all checkbox controls and add them to the list of controls to remove
             foreach (Control control in this.Controls)
             {
                 if (control is System.Windows.Forms.CheckBox)
                 {
-                    this.Controls.Remove(control);
-                    control.Dispose();
+                    controlsToRemove.Add(control);
                 }
             }
+
+            // Remove and dispose all checkbox controls
+            foreach (Control control in controlsToRemove)
+            {
+                this.Controls.Remove(control);
+                control.Dispose();
+            }
         }
+
 
         private void theatreAccess_Click(object sender, EventArgs e)
         {
@@ -183,12 +202,13 @@ namespace WinFormsApp1
 
             if (selectedFilm != null && selectedSection != null)
             {
-                Tuple<string, string> filmSectionTuple = Tuple.Create(selectedFilm, selectedSection);
+                Tuple<string, string> temp = Tuple.Create(selectedFilm, selectedSection);
 
-                if (filmWithSeatState.ContainsKey(filmSectionTuple))
+                if (filmWithSeatState.ContainsKey(temp))
                 {
-                    System.Windows.Forms.CheckBox[,] seatArray = filmWithSeatState[filmSectionTuple];
                     ClearSeatCheckboxes();
+                    System.Windows.Forms.CheckBox[,] seatArray = new System.Windows.Forms.CheckBox[seatRows, seatCols];
+                    seatArray = filmWithSeatState[temp];
                     createSeats(seatArray);
                 }
                 else
@@ -202,34 +222,6 @@ namespace WinFormsApp1
             }
         }
 
-        private void CreateSeatsForSelectedFilmAndSection()
-        {
-            string selectedFilm = filmList.SelectedItem?.ToString();
-            string selectedSection = section.SelectedItem?.ToString();
-
-            if (selectedFilm != null && selectedSection != null)
-            {
-                Tuple<string, string> filmSectionTuple = Tuple.Create(selectedFilm, selectedSection);
-
-                if (filmWithSeatState.ContainsKey(filmSectionTuple))
-                {
-                    System.Windows.Forms.CheckBox[,] seatArray = filmWithSeatState[filmSectionTuple];
-                    updateSeatState();
-                }
-                else
-                {
-                    MessageBox.Show("No seat information found for the selected film and section.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please select both film and section.");
-            }
-        }
-
-
-
-
         public string getFilmName()
         {
             return filmList.SelectedItem?.ToString();
@@ -240,6 +232,15 @@ namespace WinFormsApp1
             return section.SelectedItem?.ToString();
         }
 
+        public int getSeatRows()
+        {
+            return this.seatRows;
+        }
+
+        public int getSeatCols()
+        {
+            return this.seatCols;
+        }
 
     }
 }
