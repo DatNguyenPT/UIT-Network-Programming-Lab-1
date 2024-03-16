@@ -81,7 +81,7 @@
             read.TabIndex = 4;
             read.Text = "Đọc";
             read.UseVisualStyleBackColor = true;
-            read.Click += read_click;
+            read.Click += read_Click;
             // 
             // delete
             // 
@@ -91,6 +91,7 @@
             delete.TabIndex = 5;
             delete.Text = "Xóa";
             delete.UseVisualStyleBackColor = true;
+            delete.Click += deleteNum;
             // 
             // exit
             // 
@@ -100,6 +101,7 @@
             exit.TabIndex = 6;
             exit.Text = "Thoát";
             exit.UseVisualStyleBackColor = true;
+            exit.Click += exit_form;
             // 
             // Bai4
             // 
