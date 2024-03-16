@@ -25,6 +25,9 @@
     <Compile Update="Bai7.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Bai8.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Menu.cs">
       <SubType>Form</SubType>
     </Compile>

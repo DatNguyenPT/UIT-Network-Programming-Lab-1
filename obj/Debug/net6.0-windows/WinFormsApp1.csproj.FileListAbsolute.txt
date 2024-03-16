@@ -23,3 +23,4 @@ E:\UIT\Sophomore\Network Programming\Lab\Lab1\WinFormsApp1\WinFormsApp1\obj\Debu
 E:\UIT\Sophomore\Network Programming\Lab\Lab1\WinFormsApp1\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.Bai5Payment.resources
 E:\UIT\Sophomore\Network Programming\Lab\Lab1\WinFormsApp1\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.Bai6.resources
 E:\UIT\Sophomore\Network Programming\Lab\Lab1\WinFormsApp1\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.Bai7.resources
+E:\UIT\Sophomore\Network Programming\Lab\Lab1\WinFormsApp1\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.Bai8.resources
