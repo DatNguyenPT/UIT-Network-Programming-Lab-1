@@ -79,6 +79,7 @@ namespace WinFormsApp1
             back.TabIndex = 4;
             back.Text = "back";
             back.UseVisualStyleBackColor = true;
+            back.Click += back_click;
             // 
             // Bai5Payment
             // 

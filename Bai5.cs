@@ -176,8 +176,6 @@ namespace WinFormsApp1
         private void ClearSeatCheckboxes()
         {
             List<Control> controlsToRemove = new List<Control>();
-
-            // Find all checkbox controls and add them to the list of controls to remove
             foreach (Control control in this.Controls)
             {
                 if (control is System.Windows.Forms.CheckBox)
@@ -186,13 +184,13 @@ namespace WinFormsApp1
                 }
             }
 
-            // Remove and dispose all checkbox controls
             foreach (Control control in controlsToRemove)
             {
                 this.Controls.Remove(control);
-                control.Dispose();
             }
         }
+
+
 
 
         private void theatreAccess_Click(object sender, EventArgs e)
@@ -222,6 +220,8 @@ namespace WinFormsApp1
             }
         }
 
+
+
         public string getFilmName()
         {
             return filmList.SelectedItem?.ToString();
@@ -240,6 +240,16 @@ namespace WinFormsApp1
         public int getSeatCols()
         {
             return this.seatCols;
+        }
+
+        private void exit_form(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void reset_click(object sender, EventArgs e)
+        {
+
         }
 
     }

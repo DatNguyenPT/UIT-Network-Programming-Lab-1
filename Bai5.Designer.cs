@@ -96,6 +96,7 @@
             exit.TabIndex = 4;
             exit.Text = "Thoát";
             exit.UseVisualStyleBackColor = true;
+            exit.Click += exit_form;
             // 
             // theatreAccess
             // 

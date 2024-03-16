@@ -83,5 +83,10 @@ namespace WinFormsApp1
         }
 
         public string filmName { get; set; }
+
+        private void back_click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
