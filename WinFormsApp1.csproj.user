@@ -19,6 +19,9 @@
     <Compile Update="Bai5Payment.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Bai6.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Menu.cs">
       <SubType>Form</SubType>
     </Compile>

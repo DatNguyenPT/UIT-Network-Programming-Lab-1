@@ -77,7 +77,7 @@ namespace WinFormsApp1
             back.Name = "back";
             back.Size = new Size(129, 50);
             back.TabIndex = 4;
-            back.Text = "back";
+            back.Text = "Trở Về";
             back.UseVisualStyleBackColor = true;
             back.Click += back_click;
             // 
