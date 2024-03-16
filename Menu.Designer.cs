@@ -107,7 +107,7 @@
             btn_bai7.TabIndex = 6;
             btn_bai7.Text = "Bài 7";
             btn_bai7.UseVisualStyleBackColor = true;
-            /*btn_bai7.Click += bai7_click;*/
+            btn_bai7.Click += bai7_click;
             // 
             // btn_bai8
             // 
@@ -196,12 +196,12 @@
             Bai6 bai6 = new Bai6();
             bai6.Show();
         }
-        /*private void bai7_click(object sender, EventArgs e)
+        private void bai7_click(object sender, EventArgs e)
         {
             Bai7 bai7 = new Bai7();
             bai7.Show();
         }
-        private void bai8_click(object sender, EventArgs e)
+        /*private void bai8_click(object sender, EventArgs e)
         {
             Bai8 bai8 = new Bai8();
             bai8.Show();
