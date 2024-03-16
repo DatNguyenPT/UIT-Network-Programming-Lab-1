@@ -127,7 +127,7 @@
             btn_bai9.TabIndex = 8;
             btn_bai9.Text = "Bài 9";
             btn_bai9.UseVisualStyleBackColor = true;
-            /*btn_bai9.Click += bai9_click;*/
+            btn_bai9.Click += bai9_click;
             // 
             // Menu
             // 
@@ -206,10 +206,10 @@
             Bai8 bai8 = new Bai8();
             bai8.Show();
         }
-        /*private void bai9_click(object sender, EventArgs e)
+        private void bai9_click(object sender, EventArgs e)
         {
-            Bai9 bai7 = new Bai9();
+            Bai9 bai9 = new Bai9();
             bai9.Show();
-        }*/
+        }
     }
 }
