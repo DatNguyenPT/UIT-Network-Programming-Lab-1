@@ -87,6 +87,7 @@
             reset.TabIndex = 3;
             reset.Text = "Reset";
             reset.UseVisualStyleBackColor = true;
+            reset.Click += reset_click;
             // 
             // exit
             // 

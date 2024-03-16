@@ -249,7 +249,14 @@ namespace WinFormsApp1
 
         private void reset_click(object sender, EventArgs e)
         {
-
+            foreach (var key in filmWithSeatState.Keys)
+            {
+                foreach(var state in filmWithSeatState[key])
+                {
+                    state.Checked = false;
+                    state.Enabled = true;
+                }
+            }
         }
 
     }
