@@ -96,6 +96,7 @@ namespace WinFormsApp1
             {
                 for (int j = 0; j < seatCols; j++)
                 {
+                    seatArray[i, j] = null;
                     seatArray[i, j] = new System.Windows.Forms.CheckBox();
                 }
             }
